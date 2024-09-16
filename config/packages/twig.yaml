@@ -1,0 +1,11 @@
+twig:
+  default_path: '%kernel.project_dir%/templates'
+  globals:
+    name: '%app.name%'
+    host: '%app.host%'
+  paths:
+    '%kernel.project_dir%/assets/images': images
+    '%kernel.project_dir%/assets/styles': styles
+when@test:
+  twig:
+    strict_variables: true

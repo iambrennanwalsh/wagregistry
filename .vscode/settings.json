@@ -1,0 +1,12 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "prettier.ignorePath": ".gitignore",
+  "php.problems.exclude": {
+    "/var": true,
+    "/vendor": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
+}

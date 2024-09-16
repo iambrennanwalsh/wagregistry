@@ -1,0 +1,10 @@
+{% extends 'email/email.twig' %}
+
+{% block content %}
+  <p class="lead">Hi {{ user.name | split(' ')[0] }}, lets get your account verified.</p>
+  <spacer size="16" />
+  <p>Just click the following link and.. verified!</p>
+  <center><button href="{{url('auth.verify', {id: user.id, hash: user.emailConfirmationToken})}}" class="radius">Verify my Account</button></center>
+  <hr />
+  <p>If you encounter any issues you can reach our support by replying to this email.</p>
+{% endblock %}

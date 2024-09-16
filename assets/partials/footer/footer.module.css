@@ -1,0 +1,11 @@
+.shell {
+  position: static;
+}
+
+.footer {
+  height: 100%;
+  background-color: var(--mantine-color-body);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

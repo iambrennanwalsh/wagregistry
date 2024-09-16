@@ -1,0 +1,73 @@
+applications:
+  app:
+    type: php:8.3
+
+    source:
+      root: '/'
+
+    runtime:
+      extensions:
+        - apcu
+        - blackfire
+        - mbstring
+        - sodium
+        - xsl
+        - redis
+        - pdo_pgsql
+
+    variables:
+      env:
+        APP_ENV: prod
+        NODE_ENV: production
+      php:
+        opcache.preload: config/preload.php
+
+    relationships:
+      database:
+      redis:
+
+    mounts:
+      'var/':
+        source: 'storage'
+        source_path: 'var'
+
+    web:
+      commands:
+        start: node ./public/build/node/node.js & /usr/bin/start-php-app
+      locations:
+        '/':
+          passthru: '/index.php'
+          index:
+            - index.php
+          root: 'public'
+          scripts: true
+
+    build:
+      flavor: none
+
+    hooks:
+      build: |
+        set -eux
+        curl -fs https://get.symfony.com/cloud/configurator | bash
+        NODE_VERSION=20 symfony-build
+
+      deploy: |
+        set -eux
+        symfony-deploy
+
+    workers:
+      messenger:
+        commands:
+          start: symfony console --time-limit=3600 --memory-limit=64M messenger:consume async
+
+services:
+  database:
+    type: postgresql:16
+
+  redis:
+    type: redis:7.0
+
+routes:
+  'https://{default}/':
+    type: upstream
+    upstream: app:http

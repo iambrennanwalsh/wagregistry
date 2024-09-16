@@ -1,0 +1,106 @@
+framework:
+  assets:
+    packages:
+      web:
+        json_manifest_path: '%kernel.project_dir%/public/build/web/manifest.json'
+      node:
+        json_manifest_path: '%kernel.project_dir%/public/build/node/manifest.json'
+
+  cache:
+    app: cache.adapter.filesystem
+    system: cache.adapter.system
+
+  default_locale: en
+
+  error_controller: App\Controller\ErrorController::error
+
+  handle_all_throwables: true
+
+  http_method_override: false
+
+  lock: 'flock'
+
+  mailer:
+    dsn: '%env(MAILER_DSN)%'
+    envelope:
+      sender: '%app.email%'
+    headers:
+      From: '%app.name% <%app.email%>'
+
+  messenger:
+    transports:
+      async:
+        dsn: '%env(REDIS_URL)%/messages'
+        retry_strategy:
+          max_retries: 3
+          delay: 2
+    routing:
+      Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+      Symfony\Component\Notifier\Message\ChatMessage: async
+      Symfony\Component\Notifier\Message\SmsMessage: async
+      App\Notification\Notification: async
+
+  notifier:
+    admin_recipients:
+      - { email: '%app.email%' }
+
+  secret: '%env(APP_SECRET)%'
+
+  session:
+    handler_id: null
+    cookie_secure: auto
+    cookie_samesite: lax
+    storage_factory_id: session.storage.factory.native
+
+  php_errors:
+    log: true
+
+  rate_limiter:
+    auth:
+      policy: 'fixed_window'
+      limit: 5
+      interval: '60 minutes'
+
+  router:
+    default_uri: 'https://%app.host%'
+    utf8: true
+
+  translator:
+    default_path: '%kernel.project_dir%/translations'
+    fallbacks:
+      - en
+    providers:
+
+  validation:
+    email_validation_mode: html5
+
+when@dev:
+  framework:
+    profiler:
+      only_exceptions: false
+      collect_serializer_data: true
+
+when@prod:
+  framework:
+    cache:
+      pools:
+        doctrine.result_cache_pool:
+          adapter: cache.app
+        doctrine.system_cache_pool:
+          adapter: cache.system
+
+    router:
+      strict_requirements: null
+
+when@test:
+  framework:
+    profiler:
+      collect: false
+
+    session:
+      storage_factory_id: session.storage.factory.mock_file
+
+    test: true
+
+    validation:
+      not_compromised_password: false

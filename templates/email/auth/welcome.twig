@@ -1,0 +1,7 @@
+{% extends 'email/email.twig' %}
+
+{% block content %}
+  <p class="lead">Hi {{ user.name | split(' ')[0] }}, welcome to {{ project }}.</p>
+  <spacer size="16"></spacer>
+  <p>We're glad to have you. You can now <a href="{{ path('auth.login')}}">login to your account</a> using your email and password.</p>
+{% endblock %}

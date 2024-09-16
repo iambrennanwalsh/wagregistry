@@ -1,0 +1,5 @@
+rompetomp_inertia:
+  root_view: 'base.twig'
+  ssr:
+    enabled: true
+    url: 'http://localhost:13714/render'

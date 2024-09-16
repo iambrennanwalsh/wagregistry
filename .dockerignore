@@ -1,0 +1,27 @@
+# Miscellaneous
+**/.DS_Store
+**/*.log
+**/*.md
+/.editorconfig
+.vscode/
+.github/
+
+# Docker
+/compose.yaml
+/.docker/Dockerfile
+/.dockerignore
+
+# Git
+**/.gitignore
+.git/
+
+# Symfony
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+public/bundles/
+var/
+vendor/
+
+# Node.js
+node_modules/
+public/build/

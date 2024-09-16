@@ -1,0 +1,14 @@
+wagregistry.local
+
+route {
+  root * /app/public
+  php_fastcgi app:9000
+  encode gzip
+  file_server
+}
+
+log {
+	output file /app/var/log/server.log
+}
+
+tls /etc/caddy/certs/tls.pem /etc/caddy/certs/tls.key

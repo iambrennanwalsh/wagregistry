@@ -1,0 +1,14 @@
+# Miscellaneous
+.DS_Store
+*.log
+
+# Symfony
+/.env.local
+/.env.*.local
+/public/bundles/
+/var/
+/vendor/
+
+# Node.js
+/node_modules/
+/public/build/

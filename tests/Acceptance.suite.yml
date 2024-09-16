@@ -1,0 +1,21 @@
+actor: AcceptanceTester
+modules:
+  enabled:
+    - WebDriver:
+        url: https://wagregistry.local/
+        browser: firefox
+        host: selenium
+        capabilities:
+          acceptInsecureCerts: true
+          moz:firefoxOptions:
+            args: ['-headless']
+    - Symfony:
+        part: services
+        app_path: 'src'
+        environment: 'test'
+    - Doctrine:
+        depends: Symfony
+step_decorators:
+  - Codeception\Step\ConditionalAssertion
+  - Codeception\Step\TryTo
+  - Codeception\Step\Retry

@@ -1,0 +1,23 @@
+parameters:
+  app.name: 'WagRegistry'
+  app.email: 'mail@brennanwal.sh'
+  app.default_host: 'wagregistry.local'
+  app.host: '%env(default:app.default_host:SYMFONY_DEFAULT_ROUTE_HOST)%'
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  App\:
+    resource: '../src/'
+    exclude:
+      - '../src/DependencyInjection/'
+      - '../src/Entity/'
+      - '../src/Kernel.php'
+
+  notifier.flash_message_importance_mapper:
+    class: App\Notification\FlashMessageImportanceMapper
+
+  Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface:
+    alias: 'error_handler.error_renderer.serializer'

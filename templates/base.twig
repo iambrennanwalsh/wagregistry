@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html data-mantine-color-scheme="{{ app.request.cookies.get('theme')|default('light') }}" class="{{ app.request.cookies.get('theme')|default('light') }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
+    <meta property="fb:app_id" content="123456789" />
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="{{ name }}" />
+      <meta property="og:locale" content="en_US" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:site" content="@{{ name|lower }}" />
+      {% block stylesheets %}
+        {{ encore_entry_link_tags('web', null, 'web') }}
+      {% endblock %}
+      {% block javascripts %}
+        {{ encore_entry_script_tags('web', null, 'web') }}
+      {% endblock %}
+      {{ inertiaHead(page) }}
+  </head>
+  <body>
+    {{ inertia(page) }}
+  </body>
+</html>

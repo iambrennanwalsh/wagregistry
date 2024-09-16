@@ -1,0 +1,81 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/app/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+      - .env.local
+      - path: .env.${APP_ENV}
+        required: false
+      - path: .env.${APP_ENV}.local
+        required: false
+    volumes:
+      - ./:/app
+      - /app/vendor
+      - /app/node_modules
+      - Logs:/app/var/log
+    ports:
+      - 9000
+
+  server:
+    image: caddy:2.8-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    hostname: wagregistry.local
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    volumes:
+      - ./public:/app/public:ro
+      - ./var/log:/app/var/log
+      - ./.docker/server/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./.docker/server/certs:/etc/caddy/certs:ro
+      - Logs:/app/var/log
+      - ServerData:/data
+      - ServerConfig:/config
+
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-wagregistry}
+      - POSTGRES_PASSWORD=shireHobbit
+    ports:
+      - 5432:5432
+    volumes:
+      - DatabaseData:/var/lib/postgresql/data
+
+  cache:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+
+  mailer:
+    image: axllent/mailpit
+    restart: unless-stopped
+    ports:
+      - 1025
+      - 8025:8025
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+  selenium:
+    image: selenium/standalone-firefox
+    restart: unless-stopped
+    shm_size: 2gb
+    ports:
+      - 4444:4444
+      - 5900:5900
+      - 7900:7900
+
+volumes:
+  Logs:
+  ServerData:
+  ServerConfig:
+  DatabaseData:

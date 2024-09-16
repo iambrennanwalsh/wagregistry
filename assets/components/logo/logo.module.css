@@ -1,0 +1,10 @@
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--mantine-color-text);
+
+  &:hover {
+    color: var(--mantine-color-text);
+  }
+}
